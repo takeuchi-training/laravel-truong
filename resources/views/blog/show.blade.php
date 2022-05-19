@@ -20,4 +20,8 @@
             </div>
         </div>
     </div>
+
+    @if (session('testMessage'))
+        <h3>Test redirect param: {{ session('testMessage') }}</h3>
+    @endif
 @endsection
