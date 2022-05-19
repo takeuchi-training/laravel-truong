@@ -58,3 +58,7 @@ Route::get('/test-redirect', function () {
         ->route('blog.post.show', ['post' => 19])
         ->with("testMessage", "Test Message");
 });
+
+Route::get('/test-response', function () {
+    return response("Hello Response!", 200);
+});
