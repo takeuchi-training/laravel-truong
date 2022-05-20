@@ -49,10 +49,10 @@
                                     @enderror
                                 </div>
                                 <div class="control-group col-12 mt-2">
-                                    <label for="confirmPassword">Confirm password</label>
-                                    <input id="confirmPassword" class="form-control" name="confirmPassword"
-                                        class="@error('confirmPassword') is-invalid @enderror">
-                                    @error('confirmPassword')
+                                    <label for="password_confirmation">Confirm password</label>
+                                    <input id="password_confirmation" class="form-control" name="password_confirmation"
+                                        class="@error('password_confirmation') is-invalid @enderror">
+                                    @error('password_confirmation')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
