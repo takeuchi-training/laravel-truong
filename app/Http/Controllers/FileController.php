@@ -31,6 +31,12 @@ class FileController extends Controller
         return redirect('/files');
     }
 
+    public function show(File $file) {
+        $pathToFile = Storage::path($file->path);
+
+        return response()->file($pathToFile);
+    }
+
     public function destroy(File $file) {
         Storage::delete($file->path);
 

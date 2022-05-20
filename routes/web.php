@@ -6,7 +6,10 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\BlogPostController;
+use App\Models\BlogPost;
 use App\Services\MyTestService;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +68,7 @@ Route::get('/test-response', function () {
     return response("Hello Response!", 200);
 });
 
+// Test cookie
 Route::get('/set-cookie', function (Request $request) {
     $minutes = 60;
     $response = new Response('Set Cookie');
@@ -76,11 +80,62 @@ Route::get('/get-cookie', function (Request $request) {
     return dd($request->cookie('name'));
 });
 
-Route::get('/set-session', function (Request $request) {
+// Test session
+Route::get('/set-sessions', function (Request $request) {
     Session::put('ssTest', "My Session");
+    session(['newSession' => "My Another Session"]);
     return "Set session";
 });
 
-Route::get('/get-session', function (Request $request) {
-    return Session::get('ssTest');
+Route::get('/get-sessions', function (Request $request) {
+    return dd(session()->all());
+});
+
+Route::get('/get-session-id', function (Request $request) {
+    return dd(session()->getId());
+});
+
+Route::get('/regenerate-session-id', function () {
+    session()->regenerate();
+    return redirect('/get-session-id');
+});
+
+Route::get('/invalidate-session', function () {
+    session()->invalidate();
+    return redirect('/get-session-id');
+});
+
+Route::get('/flash-session', function() {
+    // session()->flash('temp', 'Temp value');
+    return session('temp');
+});
+
+Route::get('/flush-sessions', function () {
+    session()->flush();
+    return redirect('/get-sessions');
+});
+
+// Test response()->file(...) to read file
+Route::get('/files/{file}', [FileController::class, 'show']);
+
+// Test previous URL
+Route::get('/test-url', function(Request $request) {
+    return dd(URL::to('/'));
+});
+
+// Test sign URL and validate signed URL
+Route::get('/blog-signed-url/{post}', function(Request $request, BlogPost $post) {
+    if ($request->hasValidSignature()) {
+        return view('blog.show', [
+            'post' => $post
+        ]);
+    }
+
+    return redirect()->route('blog.index');
+})->name('blogSigned');
+
+Route::get('/create-blog-signed-url/{post}', function(BlogPost $post) {
+    return URL::temporarySignedRoute(
+        'blogSigned', now()->addMinutes(15), ['post' => $post]
+    );
 });

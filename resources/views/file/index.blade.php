@@ -15,11 +15,14 @@
                 @forelse($files as $file)
                     <ul>
                         <li>{{ $file->path }}</li>
-                        <form action="/files/{{ $file->id }}/delete" method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button class="btn btn-danger">Delete</button>
-                        </form>
+                        <div class="d-flex">
+                            <a href="/files/{{ $file->id }}" class="btn btn-info me-3">Read</a>
+                            <form action="/files/{{ $file->id }}/delete" method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
                     </ul>
                 @empty
                     <p class="text-warning">No files available</p>
