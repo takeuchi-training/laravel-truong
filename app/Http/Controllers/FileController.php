@@ -22,7 +22,8 @@ class FileController extends Controller
     }
 
     public function store(Request $request) {
-        $path = $request->file('myFile')->store('files');
+        $file = $request->file('myFile');
+        $path = $file->storeAs('files', $file->getClientOriginalName());
 
         File::create([
             'path' => $path
