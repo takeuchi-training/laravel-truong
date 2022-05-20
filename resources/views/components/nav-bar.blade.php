@@ -9,13 +9,16 @@
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link {{ $path === 'blog' ? 'active' : '' }}" aria-current="page" href="/blog">Blog</a>
+            <a class="nav-link {{ $path === 'blog' ? 'active text-danger' : '' }}" aria-current="page" href="/blog">Blog</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ $path === 'files' ? 'active' : '' }}" href="/files">Files</a>
+            <a class="nav-link {{ $path === 'files' ? 'active text-danger' : '' }}" href="/files">Files</a>
           </li>
         </ul>
     </div>
 </div>
 </nav>
-<h5 class="text-center {{ $isErrorMessage === true ? 'text-danger' : 'text-success' }} p-5" :path="$path">{{ $message }}</h5>
+<div class="p-5 d-flex flex-column justify-content-center align-items-center">
+    <h5 class="text-center {{ $isErrorMessage === true ? 'text-danger' : 'text-success' }}" :path="$path">{{ $message }}</h5>
+    <p><small class="text-center"><i>{{ $slot }}</i></small></p>
+</div>
