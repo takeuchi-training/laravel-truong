@@ -31,7 +31,7 @@
         $isErrorMessage = false;
         $message = "Lorem ipsum dolor sit amet consectetur adipisicing elit.em";
     @endphp
-    <x-navigation :message="$message" :isErrorMessage="$isErrorMessage">
+    <x-navigation test-data='test data' :message="$message" :isErrorMessage="$isErrorMessage" class="bg-info">
         This is slot's message
     </x-navigation>
     

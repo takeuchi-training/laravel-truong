@@ -18,7 +18,7 @@
     </div>
 </div>
 </nav>
-<div class="p-5 d-flex flex-column justify-content-center align-items-center">
-    <h5 class="text-center {{ $isErrorMessage === true ? 'text-danger' : 'text-success' }}" :path="$path">{{ $message }}</h5>
+<div {{ $attributes->merge(['class' => 'p-5 d-flex flex-column justify-content-center align-items-center']) }}>
+    <h5 class="text-center {{ $isErrorMessage === true ? 'text-danger' : 'text-white' }}" :path="$path">{{ $message }}</h5>
     <p><small class="text-center"><i>{{ $slot }}</i></small></p>
 </div>
