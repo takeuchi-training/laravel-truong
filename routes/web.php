@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\BlogPostController;
@@ -60,5 +62,25 @@ Route::get('/test-redirect', function () {
 });
 
 Route::get('/test-response', function () {
-    return response("Hello Response!", 500);
+    return response("Hello Response!", 200);
+});
+
+Route::get('/set-cookie', function (Request $request) {
+    $minutes = 60;
+    $response = new Response('Set Cookie');
+    $response->withCookie(cookie('name', 'My Cookie', $minutes));
+    return $response;
+});
+
+Route::get('/get-cookie', function (Request $request) {
+    return dd($request->cookie('name'));
+});
+
+Route::get('/set-session', function (Request $request) {
+    Session::put('ssTest', "My Session");
+    return "Set session";
+});
+
+Route::get('/get-session', function (Request $request) {
+    return Session::get('ssTest');
 });
