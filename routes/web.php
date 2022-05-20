@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\BlogPostController;
+use App\Http\Controllers\UserController;
 use App\Models\BlogPost;
 use App\Services\MyTestService;
 use Illuminate\Support\Facades\Storage;
@@ -138,4 +139,18 @@ Route::get('/create-blog-signed-url/{post}', function(BlogPost $post) {
     return URL::temporarySignedRoute(
         'blogSigned', now()->addMinutes(15), ['post' => $post]
     );
+});
+
+// User route
+Route::prefix('/users')
+    ->controller(UserController::class)
+    ->name('users')
+    ->group(function() {
+        Route::get('/', 'index')->name('.index');
+        
+        Route::prefix('/new')->group(function() {
+            Route::get('/', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+        });
+            
 });

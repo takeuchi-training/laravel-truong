@@ -14,6 +14,9 @@
           <li class="nav-item">
             <a class="nav-link {{ $path === 'files' ? 'active text-danger' : '' }}" href="/files">Files</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {{ $path === 'users' ? 'active text-danger' : '' }}" href="/users">Users</a>
+          </li>
         </ul>
     </div>
 </div>
