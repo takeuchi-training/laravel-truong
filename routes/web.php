@@ -60,5 +60,5 @@ Route::get('/test-redirect', function () {
 });
 
 Route::get('/test-response', function () {
-    return response("Hello Response!", 200);
+    return response("Hello Response!", 500);
 });
