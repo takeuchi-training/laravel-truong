@@ -21,7 +21,10 @@
                     <p class="text-warning">No blog Posts available</p>
                 @endforelse
             </div>
+
         </div>
+
+        <x-pagination :lastPage="$posts->lastPage()" :totalItems="$posts->total()" :onEachSide="$posts->onEachSide" />
     </div>
     
 @endsection
