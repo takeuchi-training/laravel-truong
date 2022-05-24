@@ -19,9 +19,24 @@
                 </form>
             </div>
         </div>
+
+        @if ($post->comments()->exists())
+            <div class="d-flex flex-column mt-3">
+                <h5>Comments</h5>
+                @foreach ($post->comments()->get() as $comment)
+                    <x-card>
+                        <p>{{ $comment->content }}</p>
+                    </x-card>
+                @endforeach
+            </div>
+        @else
+            <p>No comments found</p>        
+        @endif
     </div>
 
     @if (session('testMessage'))
         <h3>Test redirect param: {{ session('testMessage') }}</h3>
     @endif
+
+    
 @endsection

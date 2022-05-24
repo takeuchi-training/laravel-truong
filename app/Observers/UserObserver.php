@@ -15,8 +15,8 @@ class UserObserver
     public function created(User $user)
     {
         // Test
-        $user->name = "hacked";
-        $user->save();
+        // $user->name = "hacked";
+        // $user->save();
     }
 
     /**

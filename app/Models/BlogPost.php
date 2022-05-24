@@ -25,4 +25,8 @@ class BlogPost extends Model
     {
         return static::all();
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
 }
