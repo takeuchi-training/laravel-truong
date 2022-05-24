@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    use SoftDeletes;
+
     public function index() {
         return view('user.index', [
-            'users' => User::all()
+            'users' => User::justCreated()->lazy(10)
         ]);
     }
 
@@ -19,11 +22,13 @@ class UserController extends Controller
     }
 
     public function store(StoreUserRequest $request) {
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password
-        ]);
+        User::withoutEvents(function () use ($request) {
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password
+            ]);
+        });
 
         return redirect()->route('users.index');
     }

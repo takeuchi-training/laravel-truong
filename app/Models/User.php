@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+
+use function Illuminate\Events\queueable;
 
 class User extends Authenticatable
 {
@@ -41,4 +44,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function booted()
+    {
+        // static::addGlobalScope('test', function (Builder $builder) {
+        //     $builder->where('id', '=', 9);
+        // });
+
+        // static::created(queueable(function($user) {
+        //     $user->name = "hacked";
+        //     $user->save();
+        // }));
+    }
+
+    public function scopeJustCreated($query) {
+        $query->where('created_at', '>=', now()->subHours(9));
+    }
+    
 }
