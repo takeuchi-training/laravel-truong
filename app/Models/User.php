@@ -66,7 +66,15 @@ class User extends Authenticatable
     }
 
     public function getTestAttribute() {
-        return "Contact me at: " . $this->email;
+        return "Contact me at: " . substr($this->email, 0, strpos($this->email, "@"));
+    }
+
+    public function getEmailAttribute($value) {
+        return strtolower($value);
+    }
+
+    public function setNameAttribute($value) {
+        return $this->attributes['name'] = strtoupper($value);
     }
     
 }
