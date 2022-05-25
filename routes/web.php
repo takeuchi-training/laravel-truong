@@ -79,7 +79,7 @@ Route::get('/set-cookie', function (Request $request) {
 
 Route::get('/get-cookie', function (Request $request) {
     return dd($request->cookie('name'));
-});
+})->middleware('auth');
 
 // Test session
 Route::get('/set-sessions', function (Request $request) {

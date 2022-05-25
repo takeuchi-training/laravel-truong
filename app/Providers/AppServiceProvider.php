@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\MyTestService;
 use App\View\Components\NavBar;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::component('navigation', NavBar::class);
+        // Model::preventLazyLoading();
     }
 }

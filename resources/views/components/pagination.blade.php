@@ -6,7 +6,7 @@
         </a>
       </li>
         @if ($currentPage - $onEachSide > 1)
-            <li class="page-item"><a class="page-link" href="#">...</a></li>
+            <li class="page-item"><a class="page-link disabled" href="#">...</a></li>
         @endif
         @for ($page = 1; $page <= $lastPage; $page++)
             @if ($page >= $currentPage - $onEachSide && $page <= $currentPage + $onEachSide)
@@ -14,7 +14,7 @@
             @endif
         @endfor
         @if ($currentPage + $onEachSide < $lastPage)
-            <li class="page-item"><a class="page-link" href="#">...</a></li>
+            <li class="page-item"><a class="page-link disabled" href="#">...</a></li>
         @endif
       <li class="page-item">
         <a class="page-link" href="?page={{ $currentPage == $lastPage ? $lastPage : $currentPage + 1 }}" aria-label="Next">

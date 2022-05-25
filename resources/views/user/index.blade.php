@@ -15,6 +15,8 @@
                 @forelse($users as $user)
                     <ul>
                         <li><a href="/users/{{ $user->id }}">{{ $user->name }}</a></li>
+                        <span>{{ $user->test }}</span>
+                        {{-- <span>{{ dd($user->roles()->first()->name) }}</span> --}}
                     </ul>
                 @empty
                     <p class="text-warning">No users available</p>
