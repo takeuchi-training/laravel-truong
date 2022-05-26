@@ -19,4 +19,6 @@ class BlogPostResource extends JsonResource
             'body' => $this->body
         ];
     }
+
+    
 }

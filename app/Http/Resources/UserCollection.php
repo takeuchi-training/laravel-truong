@@ -15,11 +15,8 @@ class UserCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'test' => 'some example',
             'data' => $this->collection,
-            'links' => [
-                'self' => 'link-value',
-            ],
+            'test' => 'abc'
         ];
     }
 }

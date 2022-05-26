@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\BlogPost;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CommentFactory extends Factory
@@ -14,7 +16,8 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            'blog_post_id' => $this->faker->numberBetween($min = 1, $max = 60),
+            'blog_post_id' => BlogPost::factory(),
+            'user_id' => User::factory(),
             'content' => $this->faker->paragraph(1)
         ];
     }

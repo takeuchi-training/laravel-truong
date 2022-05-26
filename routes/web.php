@@ -163,6 +163,6 @@ Route::get('/user-resource/{id}', function ($id) {
 });
 
 Route::get('/user-collection', function () {
-    return new UserCollection(User::all()->keyBy->id);
-    // return UserResource::collection(User::all());
+    // return new UserCollection(User::paginate());
+    return UserResource::collection(User::all())->additional(['test' => 'abc']);
 });

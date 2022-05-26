@@ -14,4 +14,12 @@ class Comment extends Model
     }
 
     protected $fillable = ['content'];
+
+    // public function parentComment() {
+    //     return $this->belongsTo(Comment::class, 'parent_id');
+    // }
+
+    public function childComments() {
+        return $this->hasMany(Comment::class, 'parent_id');
+    }
 }

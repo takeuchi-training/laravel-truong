@@ -23,11 +23,22 @@
         @if ($post->comments()->exists())
             <div class="d-flex flex-column mt-3">
                 <h5>Comments</h5>
-                @foreach ($post->comments()->get() as $comment)
-                    <x-card>
-                        <p>{{ $comment->content }}</p>
-                    </x-card>
-                @endforeach
+                <ul>
+                    @foreach ($post->comments as $comment)
+                        <x-card>
+                            <p>{{ $comment->content }}</p>
+                        </x-card>
+                        @if ($comment->childComments()->exists())
+                        <ul>
+                            @foreach ($comment->childComments as $childComment)
+                                <x-card>
+                                    <p>{{ $childComment->content }}</p>
+                                </x-card> 
+                            @endforeach
+                        </ul>
+                        @endif
+                    @endforeach
+                </ul>
             </div>
         @else
             <p>No comments found</p>        

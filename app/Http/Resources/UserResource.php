@@ -30,4 +30,31 @@ class UserResource extends JsonResource
             'updated_at' => $this->updated_at,
         ];
     }
+
+    /**
+     * Get additional data that should be returned with the resource array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function with($request)
+    {
+        return [
+            'meta' => [
+                'key' => 'value',
+            ],
+        ];
+    }
+
+    /**
+     * Customize the outgoing response for the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Response  $response
+     * @return void
+     */
+    public function withResponse($request, $response)
+    {
+        $response->header('X-Value', 'True');
+    }
 }
