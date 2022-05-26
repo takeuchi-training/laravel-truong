@@ -21,17 +21,19 @@
         </div>
 
         @if ($post->comments()->exists())
-            <div class="d-flex flex-column mt-3">
+            <div class="d-flex flex-column mt-3 border border-2 border-secondary p-3">
                 <h5>Comments</h5>
                 <ul>
                     @foreach ($post->comments as $comment)
                         <x-card>
+                            <small>User: {{ $comment->user->name }}</small>
                             <p>{{ $comment->content }}</p>
                         </x-card>
                         @if ($comment->childComments()->exists())
                         <ul>
                             @foreach ($comment->childComments as $childComment)
                                 <x-card>
+                                    <small>User: {{ $childComment->user->name }}</small>
                                     <p>{{ $childComment->content }}</p>
                                 </x-card> 
                             @endforeach

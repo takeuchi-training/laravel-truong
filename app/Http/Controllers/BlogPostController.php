@@ -15,7 +15,7 @@ class BlogPostController extends Controller
      */
     public function index()
     {
-        $posts = BlogPost::paginate(3)->onEachSide(2);
+        $posts = BlogPost::paginate(9)->onEachSide(2);
 
         return view('blog.index', [
             'posts' => $posts

@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
         User::factory(30)->create();
         BlogPost::factory(30)->create();
         Comment::factory(300)->create();
-        Test::factory(30)->create();
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'subscriber']);
         RoleUser::create(['user_id' => 1, 'role_id' => 1]);
