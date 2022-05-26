@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::component('navigation', NavBar::class);
+        // Blade::component('navigation', NavBar::class);
         // Model::preventLazyLoading();
     }
 }

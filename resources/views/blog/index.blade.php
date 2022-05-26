@@ -27,10 +27,10 @@
         <x-pagination :lastPage="$posts->lastPage()" :totalItems="$posts->total()" :onEachSide="$posts->onEachSide" />
     </div>
 
-    <div>
+    {{-- <div>
         @foreach ($posts as $post)
             <p>{{ $post->comments }}</p>
         @endforeach
-    </div>
+    </div> --}}
     
 @endsection

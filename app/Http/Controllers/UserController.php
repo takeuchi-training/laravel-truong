@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use App\Events\RegisteredUser;
 
 class UserController extends Controller
 {
@@ -22,19 +23,21 @@ class UserController extends Controller
     }
 
     public function store(StoreUserRequest $request) {
-        User::withoutEvents(function () use ($request) {
-            User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password
-            ]);
+        // User::withoutEvents(function () use ($request) {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password
+        ]);
 
             // $user = new User();
             // $user->name = $request->name;
             // $user->email = $request->email;
             // $user->password= bcrypt($request->password);
             // $user->save();
-        });
+        // });
+
+        event(new RegisteredUser($user));
 
         return redirect()->route('users.index');
     }

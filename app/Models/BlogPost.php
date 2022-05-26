@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Json;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
@@ -15,6 +16,10 @@ class BlogPost extends Model
         'body',
         'user_id'
     ];
+
+    // protected $casts = [
+    //     'body' => Json::class
+    // ];
 
         /**
      * Get the prunable model query.

@@ -15,7 +15,10 @@
                 @forelse($users as $user)
                     <ul>
                         <li><a href="/users/{{ $user->id }}">{{ $user->name }}</a></li>
-                        <span>{{ $user->test }}</span>
+                        {{-- <span>{{ $user->test }}</span> --}}
+                        <span>{{ $user->email }}</span>
+                        <span>{{ $user->created_at }}</span>
+                        <span>{{ $user->created_at->setTimezone('Asia/Ho_Chi_Minh') }}</span>
                         {{-- <span>{{ dd($user->roles()->first()->name) }}</span> --}}
                     </ul>
                 @empty
@@ -24,5 +27,12 @@
             </div>
         </div>
     </div>
+
+    {{-- <ul>Timezone list
+        @foreach (DateTimeZone::listIdentifiers() as $timezone)
+        <li>{{ $timezone }}</li>
+        @endforeach
+    </ul> --}}
+        
     
 @endsection
