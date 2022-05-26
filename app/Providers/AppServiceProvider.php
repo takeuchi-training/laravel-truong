@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\MyObservers\TestUserObserverInterface;
+use App\MyObservers\UserObserverImpl;
 use App\Services\MyTestService;
 use App\View\Components\NavBar;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(TestUserObserverInterface::class, UserObserverImpl::class);
     }
 
     /**

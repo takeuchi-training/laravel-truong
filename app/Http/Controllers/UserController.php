@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use App\Events\RegisteredUser;
+use App\MyObservers\TestUserObserverInterface;
 
 class UserController extends Controller
 {
@@ -22,7 +23,7 @@ class UserController extends Controller
         return view('user.create');
     }
 
-    public function store(StoreUserRequest $request) {
+    public function store(StoreUserRequest $request, TestUserObserverInterface $observer) {
         // User::withoutEvents(function () use ($request) {
         $user = User::create([
             'name' => $request->name,
@@ -37,7 +38,8 @@ class UserController extends Controller
             // $user->save();
         // });
 
-        event(new RegisteredUser($user));
+        // event(new RegisteredUser($user));
+        $observer->afterRegister($user);
 
         return redirect()->route('users.index');
     }
