@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\UserController;
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use App\Models\BlogPost;
+use App\Models\User;
 use App\Services\MyTestService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
@@ -153,4 +156,13 @@ Route::prefix('/users')
             Route::post('/', 'store')->name('store');
         });
             
+});
+
+Route::get('/user-resource/{id}', function ($id) {
+    return new UserResource(User::findOrFail($id));
+});
+
+Route::get('/user-collection', function () {
+    return new UserCollection(User::all()->keyBy->id);
+    // return UserResource::collection(User::all());
 });

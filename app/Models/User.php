@@ -77,5 +77,9 @@ class User extends Authenticatable
     public function setNameAttribute($value) {
         return $this->attributes['name'] = strtoupper($value);
     }
+
+    public function posts() {
+        return $this->hasMany(BlogPost::class);
+    }
     
 }
