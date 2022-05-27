@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\BlogPostController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
@@ -49,16 +52,16 @@ Route::prefix('/blog')
     ->group(function () {
         Route::get('/', 'index')->name('.index');
 
-        Route::prefix('/new')->name('.new')->group(function () {
+        Route::prefix('/new')->name('.new')->middleware('auth')->group(function () {
             Route::get('/', 'create')->name('.create');
             Route::post('/', 'store')->name('.store')->middleware('test');
         });
         
         Route::prefix('/{post}')->name('.post')->group(function () {
             Route::get('/', 'show')->name('.show');
-            Route::get('/edit', 'edit')->name('.edit');
-            Route::put('/edit', 'update')->name('.update');
-            Route::delete('/', 'destroy')->name('.destroy');
+            Route::get('/edit', 'edit')->name('.edit')->middleware(['auth', 'isBlogPostOwner']);
+            Route::put('/edit', 'update')->name('.update')->middleware(['auth', 'isBlogPostOwner']);
+            Route::delete('/', 'destroy')->name('.destroy')->middleware(['auth', 'isBlogPostOwner']);
         });
 });
 
@@ -165,4 +168,32 @@ Route::get('/user-resource/{id}', function ($id) {
 Route::get('/user-collection', function () {
     // return new UserCollection(User::paginate());
     return UserResource::collection(User::all())->additional(['test' => 'abc']);
+});
+
+Route::controller(LoginController::class)->name('auth')->middleware('guest')->group(function () {
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'authenticate')->name('authenticate');
+});
+
+Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth');
+
+Route::controller(CommentController::class)->middleware('auth')->name('comments')->group(function () {
+    Route::post('/blog/{post}/comments', 'storeParentComment')->name('.storeParentComment');
+
+    Route::prefix('/comments/{comment}')->group(function() {
+        Route::post('/', 'storeChildComment')->name('.storeChildComment');
+        
+        Route::middleware('auth, isCommentOwner')->name('.comment')->group(function () {
+            Route::get('/', 'edit')->name('.edit');
+            Route::put('/', 'update')->name('.update');
+            Route::delete('/', 'destroy')->name('.destroy');
+        });
+    });
+});
+
+
+
+
+Route::get('/test', function () {
+    
 });

@@ -1,0 +1,24 @@
+html {
+    font-family: 'Nunito';
+}
+
+ul {
+    list-style-type: none;
+}
+
+.inset-shadow {
+    box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.6);
+}
+
+.btn-add-comment {
+    color: rgb(68, 68, 221);
+    cursor: pointer;
+}
+
+.btn-add-comment:hover {
+    color: #00f;
+}
+
+.comment-form {
+    display: none;
+}

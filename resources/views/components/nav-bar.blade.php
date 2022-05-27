@@ -18,10 +18,30 @@
             <a class="nav-link {{ $path === 'users' ? 'active text-danger' : '' }}" href="/users">Users</a>
           </li>
         </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          @if (!auth()->user())
+            <li class="nav-item">
+              <a class="nav-link {{ $path === 'users/new' ? 'active text-danger' : '' }}" href="/users/new">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {{ $path === 'login' ? 'active text-danger' : '' }}" href="/login">Login</a>
+            </li>
+          @else
+            <li class="nav-item">
+              <form action="/logout" method="POST">
+                @csrf
+                <button class="btn btn-danger">Logout</button>
+              </form>
+            </li>
+          @endif
+        </ul>
     </div>
 </div>
 </nav>
-<div {{ $attributes->merge(['class' => 'p-5 d-flex flex-column justify-content-center align-items-center']) }}>
+@php
+    $subNavBg = $isErrorMessage === true ? 'bg-warning' : 'bg-info';
+@endphp
+<div {{ $attributes->merge(['class' => "p-5 d-flex flex-column justify-content-center align-items-center $subNavBg"]) }}">
     <h5 class="text-center {{ $isErrorMessage === true ? 'text-danger' : 'text-white' }}" :path="$path">{{ $message }}</h5>
     <p><small class="text-center"><i>{{ $slot }}</i></small></p>
 </div>

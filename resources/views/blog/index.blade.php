@@ -8,10 +8,12 @@
                         <h1 class="display-one">Our Blog!</h1>
                         <p>Enjoy reading our posts. Click on a post to read!</p>
                     </div>
-                    <div class="col-4">
-                        <p>Create new Post</p>
-                        <a href="/blog/new" class="btn btn-primary btn-sm">Add Post</a>
-                    </div>
+                    @if (auth()->user())
+                        <div class="col-4">
+                            <p>Create new Post</p>
+                            <a href="/blog/new" class="btn btn-primary btn-sm">Add Post</a>
+                        </div>
+                    @endif
                 </div>                
                 @forelse($posts as $post)
                     <ul>

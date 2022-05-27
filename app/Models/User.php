@@ -58,9 +58,9 @@ class User extends Authenticatable
         // }));
     }
 
-    public function scopeJustCreated($query) {
-        $query->where('created_at', '>=', now()->subHours(9));
-    }
+    // public function scopeJustCreated($query) {
+    //     $query->where('created_at', '>=', now()->subHours(9));
+    // }
 
     public function roles() {
         return $this->belongsToMany(Role::class);

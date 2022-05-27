@@ -3,14 +3,14 @@
     <div class="container">
         <div class="row">
             <div class="col-12 pt-2">
-                 <div class="row">
-                    <div class="col-8">
+                 <div class="row-8">
+                    <div class="col">
                         <h1 class="display-one">All Users</h1>
                     </div>
-                    <div class="col-4">
+                    {{-- <div class="col-4">
                         <p>Register new user</p>
                         <a href="/users/new" class="btn btn-primary btn-sm">Register</a>
-                    </div>
+                    </div> --}}
                 </div>                
                 @forelse($users as $user)
                     <ul>

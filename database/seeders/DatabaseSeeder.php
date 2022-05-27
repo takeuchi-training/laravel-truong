@@ -28,5 +28,20 @@ class DatabaseSeeder extends Seeder
         RoleUser::create(['user_id' => 1, 'role_id' => 2]);
         RoleUser::create(['user_id' => 2, 'role_id' => 2]);
         RoleUser::create(['user_id' => 3, 'role_id' => 2]);
+        Comment::whereIn('id', [1,2,3])->update([
+            'blog_post_id' => 1
+        ]);
+        Comment::whereIn('id', [4,5,6])->update([
+            'blog_post_id' => null,
+            'parent_id' => 1
+        ]);
+        Comment::whereIn('id', [7,8])->update([
+            'blog_post_id' => null,
+            'parent_id' => 2
+        ]);
+        Comment::whereIn('id', [9])->update([
+            'blog_post_id' => null,
+            'parent_id' => 3
+        ]);
     }
 }

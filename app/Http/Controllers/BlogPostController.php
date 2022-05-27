@@ -43,7 +43,7 @@ class BlogPostController extends Controller
         $newPost = BlogPost::create([
             'title' => $request->title,
             'body' => $request->body,
-            'user_id' => 1
+            'user_id' => auth()->id()
         ]);
 
         return redirect('/blog/' . $newPost->id);
@@ -86,8 +86,7 @@ class BlogPostController extends Controller
     {
         $post->update([
             'title' => $request->title,
-            'body' => $request->body,
-            'user_id' => 1
+            'body' => $request->body
         ]);
 
         return redirect('/blog/' . $post->id);

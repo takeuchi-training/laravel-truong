@@ -9,33 +9,38 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <style>
-        html {
-            font-family: 'Nunito';
-        }
-    </style>
-
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" 
         rel="stylesheet" 
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" 
         crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="{{ url('css/styles.css') }}">
+
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" 
         crossorigin="anonymous"></script>
+
+    <script defer src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <script defer src="{{ url('js/app.js') }}"></script>
 
 </head>
 <body>
 
     @php
-        $isErrorMessage = false;
-        $message = "Lorem ipsum dolor sit amet consectetur adipisicing elit.em";
+        $isErrorMessage = session('message') !== null ? true : false;
+        $message = session('message') !== null ? session('message') : "Welcome to Laravel!";
     @endphp
-    <x-navigation test-data='test data' :message="$message" :isErrorMessage="$isErrorMessage" class="bg-info">
-        This is slot's message
+    <x-navigation test-data='test data' :message="$message" :isErrorMessage="$isErrorMessage">
+        This is just an example!
     </x-navigation>
     
+    <div class="container my-5">
     @yield('content')
+    </div>
 
 </body>
 </html>

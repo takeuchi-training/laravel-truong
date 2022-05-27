@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="control-group col-12 mt-2">
                                     <label for="password">Password</label>
-                                    <input id="password" class="form-control" name="password"
+                                    <input id="password" type="password" class="form-control" name="password"
                                         class="@error('password') is-invalid @enderror">
                                     @error('password')
                                         <div class="text-danger">{{ $message }}</div>
@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="control-group col-12 mt-2">
                                     <label for="password_confirmation">Confirm password</label>
-                                    <input id="password_confirmation" class="form-control" name="password_confirmation"
+                                    <input id="password_confirmation" type="password" class="form-control" name="password_confirmation"
                                         class="@error('password_confirmation') is-invalid @enderror">
                                     @error('password_confirmation')
                                         <div class="text-danger">{{ $message }}</div>
