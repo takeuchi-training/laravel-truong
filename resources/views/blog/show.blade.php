@@ -38,12 +38,27 @@
                 </div>
             @endif
             @if ($post->comments()->exists())
+                <form id="deleteComment" action="" method="POST">
+                    @csrf
+                    @method('DELETE')
+                </form>
                 <ul>
                     @foreach ($post->comments as $comment)
                     <div class="rounded-1 p-3 m-1 inset-shadow">
                         <x-card class="p-3">
                             <small><i class="bi bi-person-circle"></i> {{ $comment->user->name }}</small>
-                            <p>{{ $comment->content }}</p>
+                            <form action="/comments/{{ $comment->id }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="d-flex justify-space-between mb-1">
+                                    <textarea readonly class="form-control-plaintext w-100 edit-comment" name="comment">{{ $comment->content }}</textarea>
+                                    @if (auth()->id() === $comment->user->id)
+                                        <i class="bi bi-pencil ms-1 btn-edit-comment"></i>
+                                        <i class="bi bi-trash ms-1 btn-delete-comment" data-id="{{ $comment->id }}"></i>
+                                    @endif
+                                </div>
+                                <button class="btn btn-outline-success btn-update-comment d-none">Update</button>
+                            </form>
                         </x-card>
                         @if (auth()->user())
                             <span class="btn-add-comment">Reply</span>
@@ -62,7 +77,18 @@
                             @foreach ($comment->childComments as $childComment)
                                 <x-card class="p-2">
                                     <small><i class="bi bi-person-circle"></i> {{ $childComment->user->name }}</small>
-                                    <p>{{ $childComment->content }}</p>
+                                    <form action="/comments/{{ $childComment->id }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="d-flex justify-space-between mb-1">
+                                            <textarea readonly class="form-control-plaintext w-100 edit-comment" name="comment">{{ $childComment->content }}</textarea>
+                                            @if (auth()->id() === $childComment->user->id)
+                                                <i class="bi bi-pencil ms-1 btn-edit-comment"></i>
+                                                <i class="bi bi-trash ms-1 btn-delete-comment" data-id="{{ $childComment->id }}"></i>
+                                                @endif
+                                            </div>
+                                            <button class="btn btn-outline-success btn-update-comment d-none">Update</button>
+                                        </form>
                                 </x-card> 
                             @endforeach
                         </ul>

@@ -24,6 +24,6 @@ class IsCommentOwner
             return $next($request);
         }
 
-        return redirect('/');
+        return back()->with('message', "You don't have permission!");
     }
 }

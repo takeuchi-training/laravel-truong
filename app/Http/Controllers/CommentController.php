@@ -12,7 +12,7 @@ class CommentController extends Controller
     public function storeParentComment(CommentPostRequest $request, BlogPost $post) {
         $comment = $request->validated()['comment'];
 
-        Comment::create([
+        $newComment = Comment::create([
             'content' => $comment,
             'blog_post_id' => $post->id,
             'user_id' => auth()->id()
@@ -21,24 +21,26 @@ class CommentController extends Controller
         return back();
     }
 
-    public function storeChildComment(CommentPostRequest $request, Comment $parentComment) {
-        $comment = $request->validated()['comment'];
+    public function storeChildComment(CommentPostRequest $request, Comment $comment) {
+        $commentContent = $request->validated()['comment'];
 
         Comment::create([
-            'content' => $comment,
-            'parent_id' => $parentComment->id,
+            'content' => $commentContent,
+            'parent_id' => $comment->id,
             'user_id' => auth()->id()
         ]);
 
         return back();
     }
 
-    public function edit(Comment $comment) {
+    public function update(CommentPostRequest $request, Comment $comment) {
+        $commentContent = $request->validated()['comment'];
 
-    }
+        $comment->update([
+            'content' => $commentContent
+        ]);
 
-    public function update(Request $request, Comment $comment) {
-        
+        return back();
     }
 
     public function destroy(Comment $comment) {

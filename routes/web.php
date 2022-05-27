@@ -183,7 +183,7 @@ Route::controller(CommentController::class)->middleware('auth')->name('comments'
     Route::prefix('/comments/{comment}')->group(function() {
         Route::post('/', 'storeChildComment')->name('.storeChildComment');
         
-        Route::middleware('auth, isCommentOwner')->name('.comment')->group(function () {
+        Route::middleware('isCommentOwner')->name('.comment')->group(function () {
             Route::get('/', 'edit')->name('.edit');
             Route::put('/', 'update')->name('.update');
             Route::delete('/', 'destroy')->name('.destroy');

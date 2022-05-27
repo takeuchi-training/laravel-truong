@@ -13,7 +13,12 @@ class Comment extends Model
         return $this->belongsTo(BlogPost::class);
     }
 
-    protected $fillable = ['content'];
+    protected $fillable = [
+        'content',
+        'blog_post_id',
+        'user_id',
+        'parent_id'
+    ];
 
     public function parentComment() {
         return $this->belongsTo(Comment::class, 'parent_id');
