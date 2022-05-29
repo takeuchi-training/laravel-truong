@@ -59,9 +59,9 @@ Route::prefix('/blog')
         
         Route::prefix('/{post}')->name('.post')->group(function () {
             Route::get('/', 'show')->name('.show');
-            Route::get('/edit', 'edit')->name('.edit')->middleware(['auth', 'isBlogPostOwner']);
-            Route::put('/edit', 'update')->name('.update')->middleware(['auth', 'isBlogPostOwner']);
-            Route::delete('/', 'destroy')->name('.destroy')->middleware(['auth', 'isBlogPostOwner']);
+            Route::get('/edit', 'edit')->name('.edit')->middleware(['auth']);
+            Route::put('/edit', 'update')->name('.update')->middleware(['auth']);
+            Route::delete('/', 'destroy')->name('.destroy')->middleware(['auth']);
         });
 });
 
@@ -177,17 +177,18 @@ Route::controller(LoginController::class)->name('auth')->middleware('guest')->gr
 
 Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth');
 
-Route::controller(CommentController::class)->middleware('auth')->name('comments')->group(function () {
-    Route::post('/blog/{post}/comments', 'storeParentComment')->name('.storeParentComment');
+Route::prefix('/blog/{post}/comments')
+        ->controller(CommentController::class)
+        ->middleware('auth')
+        ->name('post.comments')
+        ->group(function () {
+    Route::post('/', 'storeParentComment')->name('.storeParentComment');
 
-    Route::prefix('/comments/{comment}')->group(function() {
+    Route::prefix('/{comment}')->name('.comment')->group(function() {
         Route::post('/', 'storeChildComment')->name('.storeChildComment');
-        
-        Route::middleware('isCommentOwner')->name('.comment')->group(function () {
-            Route::get('/', 'edit')->name('.edit');
-            Route::put('/', 'update')->name('.update');
-            Route::delete('/', 'destroy')->name('.destroy');
-        });
+        Route::get('/', 'edit')->name('.edit');
+        Route::put('/', 'update')->name('.update');
+        Route::delete('/', 'destroy')->name('.destroy');
     });
 });
 

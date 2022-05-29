@@ -14,7 +14,8 @@ $('.btn-edit-comment').on('click', function() {
 
 // Delete comment
 $('.btn-delete-comment').on('click', function() {
-	let commentID = $(this).attr('data-id');
-	$('#deleteComment').attr('action', '/comments/' + commentID);
+	let blogPostID = $(this).attr('data-post-id');
+	let commentID = $(this).attr('data-comment-id');
+	$('#deleteComment').attr('action', '/blog/' + blogPostID + '/comments/' + commentID);
 	$('#deleteComment').submit();
 });

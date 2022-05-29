@@ -21,7 +21,7 @@ class CommentController extends Controller
         return back();
     }
 
-    public function storeChildComment(CommentPostRequest $request, Comment $comment) {
+    public function storeChildComment(CommentPostRequest $request, BlogPost $post, Comment $comment) {
         $commentContent = $request->validated()['comment'];
 
         Comment::create([
@@ -33,7 +33,9 @@ class CommentController extends Controller
         return back();
     }
 
-    public function update(CommentPostRequest $request, Comment $comment) {
+    public function update(CommentPostRequest $request, BlogPost $post, Comment $comment) {
+        $this->authorize('update', $comment);
+
         $commentContent = $request->validated()['comment'];
 
         $comment->update([
@@ -43,7 +45,9 @@ class CommentController extends Controller
         return back();
     }
 
-    public function destroy(Comment $comment) {
+    public function destroy(BlogPost $post, Comment $comment) {
+        $this->authorize('delete', [$comment, $post]);
+
         $comment->delete();
 
         return back();

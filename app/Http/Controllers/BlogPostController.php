@@ -70,6 +70,8 @@ class BlogPostController extends Controller
      */
     public function edit(BlogPost $post)
     {
+        $this->authorize('update', $post);
+
         return view('blog.edit', [
             'post' => $post
         ]);
@@ -84,6 +86,8 @@ class BlogPostController extends Controller
      */
     public function update(Request $request, BlogPost $post)
     {
+        $this->authorize('update', $post);
+
         $post->update([
             'title' => $request->title,
             'body' => $request->body
@@ -100,6 +104,8 @@ class BlogPostController extends Controller
      */
     public function destroy(BlogPost $post)
     {
+        $this->authorize('delete', $post);
+
         $post->delete();
 
         return redirect('/blog');
