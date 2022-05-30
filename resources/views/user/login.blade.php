@@ -27,6 +27,15 @@
                                     <input id="password" type="password" class="form-control" name="password">
                                 </div>
                             </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <div>
+                                    <input id="remember" type="checkbox" class="form-check-input me-1" name="remember">
+                                    <label for="remember" class="form-check-label" >Remmember me</label>
+                                </div>
+                                <div>
+                                    <a href="/forgot-password">Forgot password?</a>
+                                </div>
+                            </div>
                             <div class="row mt-2">
                                 <div class="control-group col-12 text-center">
                                     <button id="btn-submit" class="btn btn-primary">

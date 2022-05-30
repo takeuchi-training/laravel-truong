@@ -12,10 +12,15 @@ use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
+use App\Mail\AuthMail;
 use App\Models\BlogPost;
 use App\Models\User;
 use App\Services\MyTestService;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\URL;
 
 /*
@@ -52,16 +57,16 @@ Route::prefix('/blog')
     ->group(function () {
         Route::get('/', 'index')->name('.index');
 
-        Route::prefix('/new')->name('.new')->middleware('auth')->group(function () {
+        Route::prefix('/new')->name('.new')->middleware(['auth', 'verified'])->group(function () {
             Route::get('/', 'create')->name('.create');
             Route::post('/', 'store')->name('.store')->middleware('test');
         });
         
         Route::prefix('/{post}')->name('.post')->group(function () {
             Route::get('/', 'show')->name('.show');
-            Route::get('/edit', 'edit')->name('.edit')->middleware(['auth']);
-            Route::put('/edit', 'update')->name('.update')->middleware(['auth']);
-            Route::delete('/', 'destroy')->name('.destroy')->middleware(['auth']);
+            Route::get('/edit', 'edit')->name('.edit')->middleware(['auth', 'verified']);
+            Route::put('/edit', 'update')->name('.update')->middleware(['auth', 'verified']);
+            Route::delete('/', 'destroy')->name('.destroy')->middleware(['auth', 'verified']);
         });
 });
 
@@ -170,7 +175,7 @@ Route::get('/user-collection', function () {
     return UserResource::collection(User::all())->additional(['test' => 'abc']);
 });
 
-Route::controller(LoginController::class)->name('auth')->middleware('guest')->group(function () {
+Route::controller(LoginController::class)->middleware('guest')->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'authenticate')->name('authenticate');
 });
@@ -179,7 +184,7 @@ Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth');
 
 Route::prefix('/blog/{post}/comments')
         ->controller(CommentController::class)
-        ->middleware('auth')
+        ->middleware(['auth', 'verified'])
         ->name('post.comments')
         ->group(function () {
     Route::post('/', 'storeParentComment')->name('.storeParentComment');
@@ -192,9 +197,75 @@ Route::prefix('/blog/{post}/comments')
     });
 });
 
-
-
-
 Route::get('/test', function () {
     
 });
+
+// Email verification test
+Route::get('/email/verify', function () {
+    return view('auth.verifyemail');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+ 
+    return redirect('/');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+ 
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+// Sending email test
+Route::get('/test-email', function() {
+    Mail::to('giangnhattruongtest@gmail.com')->send(new AuthMail());
+    return new AuthMail();
+});
+
+// Resetting password test
+Route::get('/forgot-password', function () {
+    return view('auth.forgotpassword');
+})->middleware('guest')->name('password.request');
+
+Route::post('/forgot-password', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+ 
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+ 
+    return $status === Password::RESET_LINK_SENT
+                ? back()->with(['status' => __($status)])
+                : back()->withErrors(['email' => __($status)]);
+})->middleware('guest')->name('password.email');
+
+Route::get('/reset-password/{token}', function ($token) {
+    return view('auth.resetpassword', ['token' => $token]);
+})->middleware('guest')->name('password.reset');
+
+Route::post('/reset-password', function (Request $request) {
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed',
+    ]);
+ 
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function ($user, $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
+ 
+            $user->save();
+ 
+            event(new PasswordReset($user));
+        }
+    );
+ 
+    return $status === Password::PASSWORD_RESET
+                ? redirect()->route('login')->with('status', __($status))
+                : back()->withErrors(['email' => [__($status)]]);
+})->middleware('guest')->name('password.update');

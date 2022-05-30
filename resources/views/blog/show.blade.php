@@ -30,7 +30,7 @@
                         @csrf
                         <div class="d-flex flex-column">
                             <textarea id="comment" name="comment" placeholder="Add your comment"></textarea>
-                            <button class="btn btn-primary">Add</button>
+                            <button class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -69,7 +69,7 @@
                                     @csrf
                                     <div class="d-flex flex-column">
                                         <textarea id="comment" name="comment" placeholder="Add your comment"></textarea>
-                                        <button class="btn btn-primary">Reply</button>
+                                        <button class="btn btn-primary">Submit</button>
                                     </div>
                                 </form>
                             </div>

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use App\Events\RegisteredUser;
 use App\MyObservers\TestUserObserverInterface;
+use Illuminate\Auth\Events\Registered;
 
 class UserController extends Controller
 {
@@ -40,6 +41,8 @@ class UserController extends Controller
 
         // event(new RegisteredUser($user));
         $observer->afterRegister($user);
+
+        event(new Registered($user));
 
         return redirect()->route('users.index');
     }
